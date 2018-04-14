@@ -14,6 +14,7 @@ import java.util.List;
  * Created by alexandreseverojr on 12/04/18.
  */
 @RestController
+@RequestMapping("/customers")
 public class CustomerController {
 
     private final CustomerRepository customerRepository;
@@ -22,25 +23,20 @@ public class CustomerController {
         this.customerRepository = customerRepository;
     }
 
-    @GetMapping(path = "/customer/firstName/{firstName}")
-    public List<Customer> getCustomerByFirstName(@PathVariable String firstName) {
-        return customerRepository.findByFirstName(firstName);
+    @GetMapping(path = "/")
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
     }
 
-    @GetMapping(path = "/customer/lastName/{lastName}")
-    public List<Customer> getCustomerByLastName(@PathVariable String lastName) {
-        return customerRepository.findByLastName(lastName);
-    }
-
-    @PostMapping(path = "/customer/add")
+    @PostMapping(path = "/", headers = "Accept=application/json")
     public ResponseEntity<Customer> saveCustomer(@RequestBody Customer customer) {
         customerRepository.save(customer);
 
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/customer/all")
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+    @GetMapping(path = "/{firstName}")
+    public List<Customer> getCustomerByFirstName(@PathVariable String firstName) {
+        return customerRepository.findByFirstName(firstName);
     }
 }
