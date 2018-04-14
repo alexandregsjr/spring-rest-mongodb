@@ -1,2 +1,1 @@
-# spring-rest-mongodb
-Experiments with spring boot using MongoDB
+# RESTful webservice with Spring and MongoDB
