@@ -3,6 +3,8 @@ package com.alexandregsjr.controller;
 import com.alexandregsjr.entity.document.Customer;
 import com.alexandregsjr.entity.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,17 +22,24 @@ public class CustomerController {
         this.customerRepository = customerRepository;
     }
 
-    @RequestMapping(path = "/customer/firstName/{firstName}", method = RequestMethod.GET)
+    @GetMapping(path = "/customer/firstName/{firstName}")
     public List<Customer> getCustomerByFirstName(@PathVariable String firstName) {
         return customerRepository.findByFirstName(firstName);
     }
 
-    @RequestMapping(path = "/customer/lastName/{lastName}", method = RequestMethod.GET)
+    @GetMapping(path = "/customer/lastName/{lastName}")
     public List<Customer> getCustomerByLastName(@PathVariable String lastName) {
         return customerRepository.findByLastName(lastName);
     }
 
-    @RequestMapping("/customer/all")
+    @PostMapping(path = "/customer/add")
+    public ResponseEntity<Customer> saveCustomer(@RequestBody Customer customer) {
+        customerRepository.save(customer);
+
+        return new ResponseEntity<>(customer, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/customer/all")
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
